@@ -2,68 +2,45 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Interactive AR Bulldogs</title>
+    <title>Hand Tracking Grab Controls • A-Frame</title>
+    <meta name="description" content="Hand Tracking Grab Controls • A-Frame">
+    
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+
+    <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@master/examples/js/spatial-ui/spatial-utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@master/examples/js/spatial-ui/spatial-modal.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@master/examples/js/spatial-ui/spatial-hero-image.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@master/examples/showcase/hand-tracking/hover.js"></script>
   </head>
   <body>
-    <a-scene
-      reflection="directionalLight: #sun"
+    <a-scene  reflection="directionalLight: #sun"
       ar-hit-test="target: #objects;"
       renderer="colorManagement: true; exposure: 1; toneMapping: ACESFilmic"
-      xr-mode-ui="XRMode: xr"
-    >
+      shadow="type: pcfsoft"
+      xr-mode-ui="XRMode: xr">
+      
       <a-assets>
-        <a-asset-item id="dawg" src="Thanos-in-Christmas-Pajamas.glb"></a-asset-item>
+        <img id="mll" src="mllImage.png" />
       </a-assets>
 
-      <a-light id="sun" type="directional" position="1 4 1" intensity="1.5"></a-light>
+      <a-light id="sun" type="directional" position="1 4 1" intensity="1.5" castShadow="true"></a-light>
       <a-light type="ambient" intensity="0.5"></a-light>
 
-      <a-entity id="objects" position="0 0 -3" scale="1 1 1">
-        
-        <a-gltf-model src="#dawg" position="-2 0 0" rotation="0 45 0" scale="2 2 2"
-           event-set__enter="_event: mouseenter; _target: #dawglabel1; visible: true"
-          event-set__leave="_event: mouseleave; _target: #dawglabel1; visible: false">
-          <a-text id="dawglabel1" value="Hooty Hoo" align="center" color="#FFF" 
-                  visible="false" position="0 1.2 0" geometry="primitive: plane; width: 2" 
-                  material="color: #333">
-          </a-text>
-        </a-gltf-model>
+      <a-entity camera position="0 1.5 0" look-controls wasd-controls></a-entity>
 
-        <a-gltf-model src="#dawg" position="2 0 0" rotation="0 -45 0" scale="2 2 2"
-           event-set__enter="_event: mouseenter; _target: #dawglabel2; visible: true"
-          event-set__leave="_event: mouseleave; _target: #dawglabel2; visible: false">
-          <a-text id="dawglabel2" value="Sic em woof x5!" align="center" color="#FFF" 
-                  visible="false" position="0 1.2 0" geometry="primitive: plane; width: 2" 
-                  material="color: #333">
-          </a-text>
-        </a-gltf-model>
-
-        <a-box position="-1 0.5 2" color="#4CC3D9"
-          event-set__enter="_event: mouseenter; color: #ff0000"
-          event-set__leave="_event: mouseleave; color: #4CC3D9">
-        </a-box>
-
-        <a-cylinder position="1 0.75 2" radius="0.5" height="1.5" color="#FFC65D"
-          event-set__enter="_event: mouseenter; _target: #cylLabel; visible: true"
-          event-set__leave="_event: mouseleave; _target: #cylLabel; visible: false">
-          <a-text id="cylLabel" value="I am a Cylinder" align="center" color="#FFF" 
-                  visible="false" position="0 1.2 0" geometry="primitive: plane; width: 2" 
-                  material="color: #333">
-          </a-text>
-        </a-cylinder>
-
-        <a-sphere position="0 0.5 4" radius="0.75" color="#EF2D5E"
-          event-set__enter="_event: mouseenter; material.wireframe: true"
-          event-set__leave="_event: mouseleave; material.wireframe: false">
-        </a-sphere>
+      <a-entity position="0 1.6 -1" grabbable hover>
+        <a-entity spatial-modal="width: 1.04; height: 1.44; roundCorners: false">
+        <a-entity spatial-hero-image="src: #mll; width: 1; height: 1.4; roundCorners: false" position="0 0 0.001"></a-entity>
       </a-entity>
+      </a-entity>
+
       
-      <!-- add a cursor to the camera so that it registers events with objects -->
-      <a-camera>
-        <a-cursor color="#FF0000"></a-cursor>
-      </a-camera>
+
+      <a-entity id="rightHand" hand-tracking-grab-controls="hand: right"></a-entity>
+      <a-entity id="leftHand" hand-tracking-grab-controls="hand: left"></a-entity>
 
     </a-scene>
   </body>
